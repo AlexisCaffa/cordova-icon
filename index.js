@@ -50,6 +50,7 @@ var getPlatforms = function (projectName) {
             { name : path.join('drawable-mdpi', 'icon.png'),  size : 48 },
             { name : path.join('drawable-xhdpi', 'icon.png'), size : 96 },
             { name : path.join('drawable-xxhdpi', 'icon.png'), size : 144 },
+            { name : path.join('drawable-xxxhdpi', 'icon.png'), size : 192 },
         ]
     });
     // TODO: add all platforms
