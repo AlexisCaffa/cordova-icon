@@ -43,6 +43,10 @@ That's it. Now every time you ```cordova build```, the icons will be auto genera
 Install on a Mac:
 
      $ brew install imagemagick
+     
+Install on Linux:
+
+     $ sudo apt-get install imagemagick
 
 On windows see http://www.imagemagick.org/script/binary-releases.php#windows
 

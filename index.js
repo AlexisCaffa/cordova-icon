@@ -4,6 +4,7 @@ var ig     = require('imagemagick');
 var colors = require('colors');
 var _      = require('underscore');
 var Q      = require('q');
+var path   = require('path');
 
 /**
  * Check which platforms are added to the project and return their icon names and sized
@@ -12,13 +13,14 @@ var Q      = require('q');
  * @return {Promise} resolves with an array of platforms
  */
 var getPlatforms = function (projectName) {
+    projectName = projectName ? projectName : '';
     var deferred = Q.defer();
     var platforms = [];
     platforms.push({
         name : 'ios',
         // TODO: use async fs.exists
-        isAdded : fs.existsSync('platforms/ios'),
-        iconsPath : 'platforms/ios/' + projectName + '/Resources/icons/',
+        isAdded : fs.existsSync(path.resolve('platforms', 'ios')),
+        iconsPath : path.resolve('platforms', 'ios', projectName, 'Resources', 'icons'),
         icons : [
             { name : 'icon-40.png',       size : 40  },
             { name : 'icon-40@2x.png',    size : 80  },
@@ -39,15 +41,15 @@ var getPlatforms = function (projectName) {
     });
     platforms.push({
         name : 'android',
-        iconsPath : 'platforms/android/res/',
-        isAdded : fs.existsSync('platforms/android'),
+        iconsPath : path.resolve('platforms', 'android', 'res'),
+        isAdded : fs.existsSync(path.resolve('platforms', 'android')),
         icons : [
-            { name : 'drawable/icon.png',       size : 96 },
-            { name : 'drawable-hdpi/icon.png',  size : 72 },
-            { name : 'drawable-ldpi/icon.png',  size : 36 },
-            { name : 'drawable-mdpi/icon.png',  size : 48 },
-            { name : 'drawable-xhdpi/icon.png', size : 96 },
-            { name : 'drawable-xxhdpi/icon.png', size : 144 },
+            { name : path.join('drawable', 'icon.png'),       size : 96 },
+            { name : path.join('drawable-hdpi', 'icon.png'),  size : 72 },
+            { name : path.join('drawable-ldpi', 'icon.png'),  size : 36 },
+            { name : path.join('drawable-mdpi', 'icon.png'),  size : 48 },
+            { name : path.join('drawable-xhdpi', 'icon.png'), size : 96 },
+            { name : path.join('drawable-xxhdpi', 'icon.png'), size : 144 },
         ]
     });
     // TODO: add all platforms
@@ -114,9 +116,10 @@ var getProjectName = function () {
  */
 var generateIcon = function (platform, icon) {
     var deferred = Q.defer();
+
     ig.resize({
         srcPath: settings.ICON_FILE,
-        dstPath: platform.iconsPath + icon.name,
+        dstPath: path.resolve(platform.iconsPath, icon.name),
         quality: 1,
         format: 'png',
         width: icon.size,
